@@ -26,6 +26,7 @@ This is developed using node.js and the discord.js library. To run the bot you'l
 ## Task List
 - [ ] Implement randomised name and password generator for server creation
 - [ ] Implement DMs to each player in a match with match details
+- [ ] Implement command permissions. Eg, only owner can change teamsize or jointime
 - [ ] Implement player black list
 - [ ] Cleanup code to remove references to PUG divisions
 - [ ] Implement captains game mode
