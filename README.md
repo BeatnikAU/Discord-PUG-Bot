@@ -16,6 +16,12 @@ Players will be able to initiate a PUG, signup for a PUG, then once enough playe
 `!jointime n`
   Allows the time for players to join the PUG to be adjusted to ***n*** minutes. Time can be from 1-9 minutes.
 
+## Installation
+This is developed using node.js and the discord.js library. To run the bot you'll need to create a bot from the Discord developers page and add the bot to your server. Then;
+- Install [node.js](https://nodejs.org/en/)
+- Install the [Discord.js Library](https://discord.js.org/#/)
+- Rename config-blank.js to config.js and add your bot token to the config.token variable
+- Run `node commands.js` from terminal / command prompt
 
 ## Task List
 - [ ] Implement randomised name and password generator for server creation
