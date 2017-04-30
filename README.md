@@ -24,13 +24,13 @@ This is developed using node.js and the discord.js library. To run the bot you'l
 - Run `node commands.js` from terminal / command prompt
 
 ## Task List
-- [ ] Implement randomised name and password generator for server creation
-- [ ] Implement DMs to each player in a match with match details
+- [x] Implement randomised name and password generator for server creation
+- [x] Implement DMs to each player in a match with match details
 - [ ] Implement command permissions. Eg, only owner can change teamsize or jointime
 - [ ] Implement player black list
 - [ ] Cleanup code to remove references to PUG divisions
 - [ ] Implement captains game mode
-- [ ] Allow for simultanious PUGs to be running
+- [ ] Allow for simultanious PUGs to be running (partial)
 
 ## RLO Specific Features
 - [ ] Create database to store player player details, match details, and results from matches
@@ -39,4 +39,6 @@ This is developed using node.js and the discord.js library. To run the bot you'l
 - [ ] Implement functionality for players to associate their steamID or PSN ID with their Discord 
 
 ## Known Bugs
-- When teams are assigned, team2[0] will be undefined and the first player added as team2[1]
+- ~~When teams are assigned, team2[0] will be undefined and the first player added as team2[1]~~
+- (workaround in place) teamSize, matchSize, setupTime all initialise as undefined rather than an int
+- if !start is used just before the timeout time for ending a PUG executes, the current PUG will be cancelled
