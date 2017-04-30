@@ -10,6 +10,7 @@ var teamSize;
 var matchNo = 1;
 var password;
 var serverName;
+var timer;
 
 // checks the supplied array for the supplied element
 // returns boolean
@@ -92,7 +93,7 @@ functions.checkRun = function(div, author, channel) {
       divA.joined[divA.joined.length] = author;
       divA.team2[0] = author;
       console.log('A div '+ div + ' PUG has been started by ' + author);
-      setTimeout(function(div) {commands.setupTimeout(div);}, functions.setupTime);
+      timer = setTimeout(function(div) {commands.setupTimeout(div);}, functions.setupTime);
       return messages.initiate('A', author);
       //setTimeout(functions.messageEndPug(div), setupTime);
     }
@@ -111,6 +112,7 @@ functions.checkJoin = function(div, author) {
     //divA.checkReady();
     divA.ready = true;
     console.log(author + " has joined the PUG")
+    clearTimeout(timer);
     commands.startMatch(div, author);
   }
   else if (divA.hasStarted === true && functions.inArray(divA.joined, author) === true && divA.ready === false) {
