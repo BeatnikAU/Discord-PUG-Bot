@@ -41,4 +41,4 @@ This is developed using node.js and the discord.js library. To run the bot you'l
 ## Known Bugs
 - ~~When teams are assigned, team2[0] will be undefined and the first player added as team2[1]~~
 - (workaround in place) teamSize, matchSize, setupTime all initialise as undefined rather than an int
-- if !start is used just before the timeout time for ending a PUG executes, the current PUG will be cancelled
+- ~~if !start is used just before the timeout time for ending a PUG executes, the current PUG will be cancelled~~
