@@ -24,7 +24,11 @@ const token = config.token;
 // the ready event is vital, it means that your bot will only start reacting to information
 // from Discord _after_ ready is emitted.
 bot.on('ready', () => {
-  console.log('I am ready!');
+  console.log('I am ready! \n');
+  functions.setupTime = 180000;
+  functions.matchSize = 6;
+  functions.teamSize = 3;
+  //bot.user.setUsername("PUG Bot");
 });
 
 // create an event listener for messages
@@ -33,9 +37,9 @@ bot.on('message', message => {
 // set the team size from 1-4 players
   if (/!teamsize [1-4]/i.test(message.content) == true) {
     if (message.content.length == 11) {
-      functions.teamSize = message.content.charAt(10);
-      console.log("team size changed to " + functions.teamSize);
-      functions.matchSize = 2 * functions.teamSize;
+      let tSize = parseInt(message.content.charAt(10));
+      functions.setMatchSize(tSize);
+      console.log("team size changed to " + functions.teamSize + "\nmatch size changed to " + functions.matchSize);
       message.channel.sendMessage("team size now " + functions.teamSize);
     }
   }
@@ -43,7 +47,8 @@ bot.on('message', message => {
 // set the time to setup in minutes
   if (/!jointime [1-9]/i.test(message.content) == true) {
     if (message.content.length == 11) {
-      functions.setupTime = 60000 * message.content.charAt(10);
+      let time = Number(message.content.charAt(10));
+      functions.setSetupTime(time);
       console.log("time to join is now " + (functions.setupTime / 60000) + " mins");
       message.channel.sendMessage("time to join is now " + (functions.setupTime / 60000) + " mins");
     }
@@ -60,10 +65,11 @@ bot.on('message', message => {
   }
 
   // test command to see current variables
+  /*
   if (message.content === 'testing') {
     functions.checkVariables();
   }
-
+  */
 });
 
 
@@ -72,46 +78,90 @@ var commands = {
 
   setupTimeout : function(div) {
     if (divA.hasStarted === true && divA.ready === false) {
-      divA.clearVars();
+      functions.end();
       console.log("PUG cancelled, not enough players")
-      bot.channels.get(divA.channel, 'channel').sendMessage("Not enough have signed up for the div A PUG. To start a new PUG, type !start-A into the channel");
+      bot.channels.get(divA.channel, 'channel').sendMessage(messages.cancelled());
     };
   },
 
   startMatch : function(div, author) {
-    for (var i = 1; i < divA.joined.length; i++) {
-      var l1 = divA.team1.length;
-      var l2 = divA.team2.length;
-      if (divA.team2.length == (functions.matchSize / 2)) {
-        divA.team1[l1] = divA.joined[i];
-      }
-      else if (divA.team1.length == (functions.matchSize / 2)) {
-        divA.team2[l2] = divA.joined[i];
-      }
-      else if (Math.random() < 0.5) {
-        divA.team1[l1] = divA.joined[i];
-      }
-      else {
-        divA.team2[l2] = divA.joined[i];
-      }
-    };
 
     bot.channels.get(divA.channel, 'channel').sendMessage(messages.joined(div, author));
-    bot.channels.get(divA.channel, 'channel').sendMessage('PUG is ready! The teams are');
-    bot.channels.get(divA.channel, 'channel').sendMessage('Blue: ' + divA.team1);
-    bot.channels.get(divA.channel, 'channel').sendMessage('Orange: ' + divA.team2);
-    setTimeout(function() {functions.end('A'); }, functions.roundTime);
+
+    functions.sortTeams(functions.teamSize);
+    functions.checkTeams();
+    functions.createSvrName();
+    functions.createPasswd();
+    functions.checkTeams();
+    //commands.createRole();
+    commands.createChannel();
+
+    console.log(functions.serverName + '\n' + functions.password);
+
+    bot.channels.get(divA.channel, 'channel').sendMessage('PUG is ready! The teams are; \nBlue: ' + divA.team1 + '\nOrange: ' + divA.team2 + '\nPlease check your DMs for server details');
+    //setTimeout(function() {functions.end('A'); }, functions.roundTime);
 
     // clears variables ready for the next PUG
-    divA.clearVars();
+    console.log("The Teams are: \n Blue: " + divA.team1 + "\n Orange: " + divA.team2 + "\n teamsize " + divA.team2.length);
+
+    var first = divA.startedBy.toString().slice(2, -1)
+    bot.users.get(first).sendMessage(messages.teamDM("Orange", "create", functions.serverName, functions.password));
+
+    for (i = 0; i < divA.team1.length; i++) {
+      var player = divA.team1[i].toString().slice(2, -1);
+      bot.users.get(player).sendMessage(messages.teamDM("Blue", "join", functions.serverName, functions.password));
+    };
+
+    for (i = 1; i < divA.team2.length; i++) {
+      var player = divA.team2[i].toString().slice(2, -1);
+      bot.users.get(player).sendMessage(messages.teamDM("Orange", "join", functions.serverName, functions.password));
+    };
+
+    functions.end();
+  },
+
+// creates the role for the PUG players
+  /*createRole : function() {
+    console.log("DEBUG: server id is " + config.server)
+    if (bot.guilds.get(config.server).available) {
+      bot.guilds.get(config.server).createRole({name: functions.serverName + "-Orange"});
+      bot.guilds.get(config.server).createRole({name: functions.serverName + "-Blue"});
+    };
+  },
+*/
+// creates voice channels for the PUG players to use
+  createChannel : function() {
+
+    if (bot.guilds.get(config.server).available) {
+      let server = bot.guilds.get(config.server);
+      server.createChannel(functions.serverName + "-Orange", 'voice')
+      server.createChannel(functions.serverName + "-Blue", 'voice');
+
+      setTimeout(function() {
+        let orange = server.channels.find('name', functions.serverName + "-Orange").id;
+        let blue = server.channels.find('name', functions.serverName + "-Blue").id;
+        server.channels.get(orange).setUserLimit(functions.teamSize);
+        server.channels.get(blue).setUserLimit(functions.teamSize);
+
+        setTimeout(function(){
+          bot.channels.get(orange).delete();
+          bot.channels.get(blue).delete();
+        }, 30000);
+      }, 2000);
+    };
   }
 
 };
 
 // this method of exporting is to work around circular dependencies
-for(var key in commands) {
+for (var key in commands) {
   module.exports[key] = commands[key];
 }
+
+// catch unhandled promise rejection warnings
+process.on("unhandledRejection", err => {
+  console.error("Uncaught Promise Error: \n" + err.stack);
+});
 
 // log our bot in
 bot.login(token);

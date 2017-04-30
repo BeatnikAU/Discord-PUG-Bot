@@ -20,13 +20,4 @@ divA.checkReady = function() {
   }
 };
 
-divA.clearVars = function() {
-  divA.hasStarted = false;
-  divA.joined = [];
-  divA.team1 = [];
-  divA.team2 = [];
-  divA.startedBy;
-  divA.channel;
-};
-
 module.exports = divA;

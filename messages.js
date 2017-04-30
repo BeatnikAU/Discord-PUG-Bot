@@ -1,6 +1,7 @@
 var messages = {};
 
 var divA = require('./divA.js');
+var functions = require('./functions.js');
 
 messages.running = function(div) {
   return 'There is already a PUG running. Please wait for this to finish and try again';
@@ -8,6 +9,10 @@ messages.running = function(div) {
 
 messages.initiate = function(div, author) {
   return 'A PUG has been started by ' + author + '. To join, type !join';
+};
+
+messages.cancelled = function() {
+  return "Not enough have signed up for the PUG. To start a new PUG, type !start into the channel";
 };
 
 messages.joined = function(div, author) {
@@ -32,12 +37,10 @@ messages.endPug = function(div) {
 
 messages.available = function(div) {
   return "The PUG bot is now available to starte PUG. To start one, type '!start into chat";
-}
+};
 
-messages.endPug = function(div) {
-  if (div === 'A') {
-    return "The PUG has ended. To start a new PUG type !start into chat";
-  };
-}
+messages.teamDM = function(colour, method, name, pass) {
+  return "The PUG is ready! Please **" + method + "** a private match with the following details and join team **" + colour + "**: \n Name: " + name + "\n Password: " + pass;
+};
 
 module.exports = messages
