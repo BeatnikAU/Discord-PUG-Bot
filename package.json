@@ -1,0 +1,22 @@
+{
+    "name": "Discord-PUG-Bot",
+    "version": "1.0.0",
+    "description": "A Discord bot for organising Pickup Games. Aimed at Rocket League and written for use on discord.gg/rlo",
+    "keywords": ["discord", "bot", "pug", "rlo"],
+    "homepage": "https://github.com/BeatnikAU/Discord-PUG-Bot/",
+    "bugs": "https://github.com/BeatnikAU/Discord-PUG-Bot/issues/",
+    "private": true,
+    "author": "BeatnikAU (https://github.com/BeatnikAU/)",
+    "contributors": ["Arcadeena <arcadeena@gmail.com> (https://github.com/arcadeena/)"],
+    "main": "commands.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/BeatnikAU/Discord-PUG-Bot.git"
+    },
+    "dependencies": {
+        "discord.js": "11.0.0"
+    },
+    "engines": {
+        "node": ">=6.0.0"
+    }
+}
