@@ -11,7 +11,7 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 
 // import config.json for credentials
-var CONFIG = require('./config.json');
+var CONFIG = require('../config.json');
 
 // import other files
 var functions = require('./functions.js');
