@@ -1,46 +1,42 @@
-var messages = {};
+module.exports = {
 
-var divA = require('./divA.js');
-var functions = require('./functions.js');
+    running(div) {
+        return `There is already a PUG running. Please wait for this to finish and try again`;
+    },
 
-messages.running = function(div) {
-  return 'There is already a PUG running. Please wait for this to finish and try again';
-};
+    initiate(div, user) {
+        return `A PUG has been started by ${user}. To join, type !join`;
+    },
 
-messages.initiate = function(div, author) {
-  return 'A PUG has been started by ' + author + '. To join, type !join';
-};
+    cancelled() {
+        return `Not enough have signed up for the PUG. To start a new PUG, type !start into the channel`;
+    },
 
-messages.cancelled = function() {
-  return "Not enough have signed up for the PUG. To start a new PUG, type !start into the channel";
-};
+    joined(div, user) {
+        return `${user} has joined the PUG!`;
+    },
 
-messages.joined = function(div, author) {
-  return author + ' has joined the PUG!';
-};
+    alreadyIn(user) {
+        return `${user} is already signed up!`;
+    },
 
-messages.alreadyIn = function(author) {
-  return author + ' is already signed up!';
-};
+    alreadyRunning(div, user) {
+        return `Sorry ${user}, a PUG is already playing. Please try again later`
+    },
 
-messages.alreadyRunning = function(div, author) {
-  return 'Sorry ' + author + ', a PUG is already playing. Please try again later'
-};
+    noPug(div, user) {
+        return `Sorry ${user}, there is currently no PUG running. You can start a PUG with !start`;
+    },
 
-messages.noPug = function(div, author) {
-  return 'Sorry ' + author + ', there is currently no PUG running. You can start a PUG with !start';
-};
+    endPug(div) {
+        return `The PUG has ended. To start a new PUG, type !start`;
+    },
 
-messages.endPug = function(div) {
-  return 'The PUG has ended. To start a new PUG, type !start';
-};
+    available(div) {
+        return `The PUG bot is now available to starte PUG. To start one, type '!start' into chat`;
+    },
 
-messages.available = function(div) {
-  return "The PUG bot is now available to starte PUG. To start one, type '!start into chat";
-};
-
-messages.teamDM = function(colour, method, name, pass) {
-  return "The PUG is ready! Please **" + method + "** a private match with the following details and join team **" + colour + "**: \n Name: " + name + "\n Password: " + pass;
-};
-
-module.exports = messages
+    teamDM(colour, method, name, pass) {
+        return `The PUG is ready! Please **${method}** a private match with the following details and join team **${colour}**: \n Name: ${name}\n Password: ${pass}`;
+    }
+}
