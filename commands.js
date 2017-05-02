@@ -10,8 +10,8 @@ const Discord = require('discord.js');
 // create an instance of a Discord Client, and call it bot
 const bot = new Discord.Client();
 
-// import config.js for credentials
-var config = require('./config.js');
+// import config.json for credentials
+var CONFIG = require('./config.json');
 
 // import other files
 var functions = require('./functions.js');
@@ -19,7 +19,7 @@ var divA = require('./divA.js');
 var messages = require('./messages.js');
 
 // the token of your bot - https://discordapp.com/developers/applications/me
-const token = config.token;
+const token = CONFIG.token;
 
 // the ready event is vital, it means that your bot will only start reacting to information
 // from Discord _after_ ready is emitted.
@@ -122,18 +122,18 @@ var commands = {
 
 // creates the role for the PUG players
   /*createRole : function() {
-    console.log("DEBUG: server id is " + config.server)
-    if (bot.guilds.get(config.server).available) {
-      bot.guilds.get(config.server).createRole({name: functions.serverName + "-Orange"});
-      bot.guilds.get(config.server).createRole({name: functions.serverName + "-Blue"});
+    console.log("DEBUG: guild id is " + CONFIG.guild)
+    if (bot.guilds.get(CONFIG.guild).available) {
+      bot.guilds.get(CONFIG.guild).createRole({name: functions.serverName + "-Orange"});
+      bot.guilds.get(CONFIG.guild).createRole({name: functions.serverName + "-Blue"});
     };
   },
 */
 // creates voice channels for the PUG players to use
   createChannel : function() {
 
-    if (bot.guilds.get(config.server).available) {
-      let server = bot.guilds.get(config.server);
+    if (bot.guilds.get(CONFIG.guild).available) {
+      let server = bot.guilds.get(CONFIG.guild);
       server.createChannel(functions.serverName + "-Orange", 'voice')
       server.createChannel(functions.serverName + "-Blue", 'voice');
 
