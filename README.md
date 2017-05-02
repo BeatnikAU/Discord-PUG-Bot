@@ -21,7 +21,7 @@ This is developed using node.js and the discord.js library. To run the bot you'l
 - Install [node.js](https://nodejs.org/en/)
 - Rename config-blank.json to config.json then add your bot token and guild id
 - Run `npm install` from terminal / command prompt to install the dependencies
-- Run `node commands.js` from terminal / command prompt to start the bot
+- Run `npm start` from terminal / command prompt to start the bot
 
 ## Task List
 

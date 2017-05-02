@@ -21,7 +21,7 @@ module.exports = {
     },
 
     alreadyRunning(div, user) {
-        return `Sorry ${user}, a PUG is already playing. Please try again later`
+        return `Sorry ${user}, a PUG is already playing. Please try again later`;
     },
 
     noPug(div, user) {
@@ -39,4 +39,4 @@ module.exports = {
     teamDM(colour, method, name, pass) {
         return `The PUG is ready! Please **${method}** a private match with the following details and join team **${colour}**: \n Name: ${name}\n Password: ${pass}`;
     }
-}
+};
