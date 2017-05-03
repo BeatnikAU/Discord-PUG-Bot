@@ -8,7 +8,7 @@
     "private": true,
     "author": "BeatnikAU (https://github.com/BeatnikAU/)",
     "contributors": ["Arcadeena <arcadeena@gmail.com> (https://github.com/arcadeena/)"],
-    "main": "src/commands.js",
+    "main": "src/index.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/BeatnikAU/Discord-PUG-Bot.git"
