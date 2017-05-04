@@ -17,7 +17,7 @@ client.on(`message`, message => {
         }
 
         console.log(`${(/^!join <@([0-9]*)>$/i).test(content)}: ${content}`);
-        if ((/^!join <@([1-9]*)>$/i).test(content)) {
+        if ((/^!join <@([0-9]*)>$/i).test(content)) {
             let id = Utils.getNumbers(content)[0];
             let pug = PickupGame.getForUser(id);
             console.log(`${id} + ${pug ? "a" : "b"}`);
@@ -28,9 +28,16 @@ client.on(`message`, message => {
             }
         }
 
-        if (content === `!end`) {
+        if (content === `!leave`) {
             let pug = PickupGame.getForUser(authorID);
             if (pug) {
+                pug.removePlayer(authorID);
+            }
+        }
+
+        if (content === `!end`) {
+            let pug = PickupGame.getForUser(authorID);
+            if (pug && authorID === pug.hostID) {
                 pug.end();
             }
         }

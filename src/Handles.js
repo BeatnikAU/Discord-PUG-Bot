@@ -14,7 +14,7 @@ module.exports = class Handles {
     }
 
     get startPUGString() {
-        return `To start a new PUG, type '!start (team size).`;
+        return `To start a new PUG, type '!start (team size).'`;
     }
 
     get joinPUGString() {
@@ -34,7 +34,7 @@ module.exports = class Handles {
         const user = this.client.users.get(userID);
         const host = this.client.users.get(this.pug.hostID);
         const requiredPlayers = this.pug.matchSize - this.pug.playerIDs.length;
-        this.channel.sendMessage(`${user} has signed up for ${host}'s PUG! Need ${requiredPlayers} more players to begin!'`);
+        this.channel.sendMessage(`${user} has signed up for ${host}'s PUG! Need ${requiredPlayers} more players to begin!`);
     }
 
     matchFull(userID) {
@@ -52,10 +52,27 @@ module.exports = class Handles {
         this.channel.sendMessage(`Sorry ${user}, that PUG is already active. ${this.startPUGString}`);
     }
 
+    playerLeft(userID) {
+        const user = this.client.users.get(userID);
+        const host = this.client.users.get(this.pug.hostID);
+        const requiredPlayers = this.pug.matchSize - this.pug.playerIDs.length;
+        this.channel.sendMessage(`${user} has successfully left ${host}'s PUG! Need ${requiredPlayers} more players to begin!`);
+    }
+
+    unableToLeave(userID) {
+        const user = this.client.users.get(userID);
+        this.channel.sendMessage(`Sorry ${user}, you can't leave a PUG that has already started.`);
+    }
+
     // ENDING
     cancelled() {
         const host = this.client.users.get(this.pug.hostID);
         this.channel.sendMessage(`${host}'s PUG didn't have enough players to start. ${this.startPUGString}`);
+    }
+
+    cancelledByHost() {
+        const host = this.client.users.get(this.pug.hostID);
+        this.channel.sendMessage(`${host} has cancelled their PUG. ${this.startPUGString}`);
     }
 
     ended() {
@@ -102,11 +119,11 @@ module.exports = class Handles {
             description: `${host}'s PUG is ready!`,
             fields: [{
                 name: `Blue`,
-                value: `${blueTeam.join(`\n`)}`,
+                value: `${blueTeam.map(id => `<@${id}>`).join(`\n`)}`,
                 inline: true
             }, {
                 name: `Orange`,
-                value: `${orangeTeam.join(`\n`)}`,
+                value: `${orangeTeam.map(id => `<@${id}>`).join(`\n`)}`,
                 inline: true
             }]
         });

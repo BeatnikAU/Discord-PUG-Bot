@@ -72,6 +72,11 @@ module.exports = class PickupGame {
         };
         INSTANCES.add(this);
         this.handles.initiate();
+        this.timeoutID = setTimeout(() => {
+            if (this.playerIDs.length !== this.matchSize) {
+                this.end();
+            }
+        }, 1000 * 60 * 5);
     }
 
     get matchSize() {
@@ -115,9 +120,29 @@ module.exports = class PickupGame {
         return false;
     }
 
+    removePlayer(userID) {
+        if (this.state === PickupGame.SETUP) {
+            if (this.playerIDs.includes(userID)) {
+                if (userID !== this.hostID) {
+                    this.playerIDs.splice(this.playerIDs.indexOf(userID), 1);
+                    this.handles.playerLeft(userID);
+                    return true;
+                }
+                this.end();
+                this.handles.cancelledByHost();
+                return true;
+            }
+            return false;
+        }
+        this.handles.unableToLeave(userID);
+        return false;
+    }
+
     start(guild) {
         if (this.state === PickupGame.SETUP) {
             if (this.playerIDs.length === this.matchSize) {
+                clearTimeout(this.timeoutID);
+                this.timeoutID = undefined;
                 this.state = PickupGame.ACTIVE;
                 this.playerIDs = Utils.shuffleArray(this.playerIDs);
                 this.server.username = Utils.generateUsername();
@@ -134,6 +159,8 @@ module.exports = class PickupGame {
     end() {
         if (this.state !== PickupGame.ENDED) {
             if (this.state === PickupGame.SETUP) {
+                clearTimeout(this.timeoutID);
+                this.timeoutID = undefined;
                 this.handles.cancelled();
             } else {
                 this.server.orange.then(channel => channel.delete());
