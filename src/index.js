@@ -4,10 +4,21 @@ const Discord = require('discord.js');
 const Utils = require(`./Utils.js`);
 
 const client = new Discord.Client();
+const commands = [];
+
 client.on(`message`, message => {
+
     if (message.channel.type === `text` && message.guild.id === CONFIG.guild) {
         const authorID = message.author.id;
         const content = message.content;
+
+        commands.forEach(command => {
+            if (command.regex.test(content)) {
+                command.authorize(message).then(authorized => {
+                    if (authorized) command.execute(message);
+                }).catch(console.error);
+            }
+        });
 
         if ((/^!(start|host)( [1-4]|)$/i).test(content)) {
             if (!PickupGame.getForUser(authorID)) {
