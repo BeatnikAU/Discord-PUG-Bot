@@ -5,8 +5,8 @@ const INSTANCES = new Set();
 
 class PickupGame {
 
-    static PUGCount() {
-        return INSTANCES.size();
+    static get PUGCount() {
+        return INSTANCES.size;
     }
 
     /**
