@@ -75,10 +75,8 @@ class PickupGame {
         INSTANCES.add(this);
         this.handles.initiate();
         this.timeoutID = setTimeout(() => {
-            if (this.playerIDs.length !== this.matchSize) {
-                this.end();
-            }
-        }, 1000 * 60 * 5);
+            this.end();
+        }, PickupGame.joinTime);
     }
 
     get matchSize() {
@@ -177,6 +175,7 @@ class PickupGame {
     }
 }
 
+PickupGame.joinTime = 1000 * 60 * 5; // 5 minutes by default
 PickupGame.teamSize = 0; // Host defined or three by default
 PickupGame.maxPUGs = 0; // Infinite by default
 module.exports = PickupGame;

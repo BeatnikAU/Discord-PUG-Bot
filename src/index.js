@@ -6,6 +6,7 @@ const Utils = require(`./Utils.js`);
 const client = new Discord.Client();
 const commands = [
     new(require(`./commands/TeamSize.js`))(),
+    new(require(`./commands/JoinTime.js`))(),
     new(require(`./commands/MaxPUGs.js`))(),
     new(require(`./commands/Start.js`))(),
     new(require(`./commands/Leave.js`))(),
