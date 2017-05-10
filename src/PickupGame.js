@@ -3,7 +3,11 @@ const Handles = require(`./Handles.js`);
 
 const INSTANCES = new Set();
 
-module.exports = class PickupGame {
+class PickupGame {
+
+    static PUGCount() {
+        return INSTANCES.size();
+    }
 
     /**
      * This method will return the PUG that a target user is currently signed up
@@ -56,9 +60,7 @@ module.exports = class PickupGame {
         return 2;
     }
 
-    constructor(userID, channel, teamSize = 3) {
-        console.assert(!PickupGame.getForUser(userID), `Attempting to create a PUG when user is already signed up for one!`); // This is bad
-
+    constructor(userID, channel, teamSize) {
         this.handles = new Handles(this, channel);
         this.teamSize = parseInt(teamSize);
         this.state = PickupGame.SETUP;
@@ -173,4 +175,8 @@ module.exports = class PickupGame {
         }
         return false;
     }
-};
+}
+
+PickupGame.teamSize = 0; // Host defined or three by default
+PickupGame.maxPUGs = 0; // Infinite by default
+module.exports = PickupGame;
