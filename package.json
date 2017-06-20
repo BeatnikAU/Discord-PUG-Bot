@@ -20,6 +20,6 @@
         "node": ">=6.0.0"
     },
     "scripts": {
-        "start": "node src/commands.js"
+        "start": "node src/index.js"
     }
 }
