@@ -76,6 +76,7 @@ class PickupGame {
         this.handles.initiate();
         this.timeoutID = setTimeout(() => {
             this.end();
+            this.handles.cancelled();
         }, PickupGame.joinTime);
     }
 
@@ -161,7 +162,6 @@ class PickupGame {
             if (this.state === PickupGame.SETUP) {
                 clearTimeout(this.timeoutID);
                 this.timeoutID = undefined;
-                this.handles.cancelled();
             } else {
                 this.server.orange.then(channel => channel.delete());
                 this.server.blue.then(channel => channel.delete());

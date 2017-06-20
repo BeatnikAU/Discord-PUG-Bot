@@ -15,7 +15,6 @@ class Join extends Command {
     execute(message) {
         let id = (message.content.match(/[0-9]{18}/g) || [])[0];
         let pug = PickupGame.getForUser(id);
-        console.log(id + " " + pug);
         if (pug) {
             if (pug.addPlayer(message.author.id)) {
                 pug.start(message.client.guilds.get(CONFIG.guild));
